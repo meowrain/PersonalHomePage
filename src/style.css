@@ -1,0 +1,44 @@
+@import url("assets/css/font.css");
+
+:root {
+  --font-family-heading: "Fredoka";
+  --font-family-heading-fallback: "sans-serif";
+  --font-family-body: "Nunito Sans";
+  --font-family-body-fallback: "sans-serif";
+  --font-family-tertiary: "Nunito";
+  --font-family-tertiary-fallback: "sans-serif";
+  --color-theme-body: #000000;
+  --color-primary-text: #ffffff;
+  --color-secondary-text: #f8e0c7;
+  --color-primary-accent: #ff8ab6;
+  --color-tertiary-accent: #fe638c;
+  --color-background: #000000;
+  --color-primary-button: #e06b9b;
+  --color-secondary-button: #f87a9b;
+  --color-hover: #fa5882;
+  --site-content-max-width: 2250px;
+  --site-content-padding: 30px;
+  --grid-gap: 30px;
+}
+
+body {
+  background-color: var(--color-theme-body);
+  margin: 0;
+  font-family: var(--font-family-body), var(--font-family-body-fallback);
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+a:active,
+a:focus {
+  color: var(--color-primary-accent);
+}
+a:active,
+a:focus,
+a:hover {
+  outline-color: var(--color-primary-accent);
+  filter: brightness(0.7);
+}
