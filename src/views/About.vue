@@ -1,36 +1,46 @@
 <template>
-    <div class="about-container">
+    <div class="about-container flex flex-col items-center justify-center min-h-screen  text-white text-center p-5">
         <!-- 大头像 -->
-        <div class="avatar-container">
-            <img class="avatar" src="https://avatars.githubusercontent.com/u/107172084?v=4" alt="My Avatar">
+        <div class="avatar-container mb-5 relative inline-block">
+            <div
+                class="absolute -top-2 -left-2 -right-2 -bottom-2 rounded-full bg-gradient-conic from-red-500 via-orange-500 to-red-500 opacity-0 scale-90 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 animate-rotateRainbow">
+            </div>
+            <img class="avatar w-36 h-36 rounded-full border-4 border-white shadow-lg relative z-10 transition-transform duration-300 group-hover:scale-110"
+                src="https://avatars.githubusercontent.com/u/107172084?v=4" alt="My Avatar">
         </div>
 
         <!-- 昵称 -->
-        <div class="nickname">MeowRain</div>
+        <div class="nickname text-2xl font-bold mb-2">MeowRain</div>
 
         <!-- 个人社交平台 -->
-        <div class="social-platforms">
-            <a href="https://github.com/meowrain" target="_blank" class="social-link">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" class="social-icon">
+        <div class="social-platforms flex gap-5 mb-5">
+            <a href="https://github.com/meowrain" target="_blank"
+                class="social-link flex items-center gap-2 text-white hover:text-blue-500 transition-colors duration-200">
+                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"
+                    class="social-icon w-6 h-6 invert">
                 GitHub
             </a>
-            <a href="https://twitter.com/meowrain" target="_blank" class="social-link">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25347.png" alt="Twitter" class="social-icon">
+            <a href="https://twitter.com/meowrain" target="_blank"
+                class="social-link flex items-center gap-2 text-white hover:text-blue-500 transition-colors duration-200">
+                <img src="https://cdn-icons-png.flaticon.com/512/25/25347.png" alt="Twitter"
+                    class="social-icon w-6 h-6 invert">
                 Twitter
             </a>
-            <a href="https://weibo.com/meowrain" target="_blank" class="social-link">
-                <img src="https://cdn-icons-png.flaticon.com/512/23/23931.png" alt="Weibo" class="social-icon">
+            <a href="https://weibo.com/meowrain" target="_blank"
+                class="social-link flex items-center gap-2 text-white hover:text-blue-500 transition-colors duration-200">
+                <img src="https://cdn-icons-png.flaticon.com/512/23/23931.png" alt="Weibo"
+                    class="social-icon w-6 h-6 invert">
                 Weibo
             </a>
         </div>
 
         <!-- 所在学校 -->
-        <div class="school">山西农业大学 - 计算机科学与技术专业</div>
+        <div class="school text-lg text-gray-300 mb-5">山西农业大学 - 计算机科学与技术专业</div>
 
         <!-- 经历 -->
-        <div class="experience">
-            <h3>经历</h3>
-            <ul>
+        <div class="experience bg-gray-800 p-5 rounded-lg shadow-lg max-w-md w-full mb-5">
+            <h3 class="text-xl font-bold mb-2">经历</h3>
+            <ul class="list-disc pl-5 text-left text-gray-300">
                 <li>2021年 - 加入某实验室，参与前端开发项目</li>
                 <li>2022年 - 获得校级优秀学生奖</li>
                 <li>2023年 - 实习于某互联网公司，负责前端开发</li>
@@ -38,79 +48,16 @@
         </div>
 
         <!-- 欢迎语 -->
-        <div class="welcome-message">欢迎来到我的个人页面！</div>
-
+        <div class="welcome-message text-2xl font-bold mt-5 mb-10">欢迎来到我的个人页面！</div>
     </div>
 </template>
 
 <script lang="ts" setup>
-
+// 这里可以添加逻辑代码
 </script>
 
-<style lang="css" scoped>
-.about-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    text-align: center;
-    min-height: 100vh;
-    background-color: #000;
-    color: #fff;
-}
-
-/* 大头像 */
-.avatar-container {
-    margin-bottom: 20px;
-    position: relative;
-    display: inline-block;
-}
-
-.avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 4px solid #fff;
-    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
-    position: relative;
-    z-index: 1;
-    transition: transform 0.3s ease;
-}
-
-.avatar-container::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg,
-            #ff0000,
-            #ff7f00,
-            #ffff00,
-            #00ff00,
-            #0000ff,
-            #4b0082,
-            #9400d3,
-            #ff0000);
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    transform: scale(0.9);
-}
-
-.avatar-container:hover::before {
-    opacity: 1;
-    transform: scale(1);
-    animation: rotateRainbow 1.5s linear infinite;
-}
-
-.avatar-container:hover .avatar {
-    transform: scale(1.1);
-}
-
+<style scoped>
+/* 自定义动画 */
 @keyframes rotateRainbow {
     0% {
         transform: rotate(0deg);
@@ -121,83 +68,7 @@
     }
 }
 
-/* 昵称 */
-.nickname {
-    font-size: 28px;
-    font-weight: bold;
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-/* 个人社交平台 */
-.social-platforms {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.social-link {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    text-decoration: none;
-    color: #fff;
-    font-size: 16px;
-    transition: color 0.2s ease;
-}
-
-.social-link:hover {
-    color: #007bff;
-}
-
-.social-icon {
-    width: 24px;
-    height: 24px;
-    filter: invert(1);
-}
-
-/* 所在学校 */
-.school {
-    font-size: 18px;
-    color: #ccc;
-    margin-bottom: 20px;
-}
-
-/* 经历 */
-.experience {
-    background-color: #1a1a1a;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-    max-width: 400px;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.experience h3 {
-    font-size: 22px;
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-.experience ul {
-    list-style-type: disc;
-    padding-left: 20px;
-    text-align: left;
-}
-
-.experience li {
-    font-size: 16px;
-    color: #ccc;
-    margin-bottom: 8px;
-}
-
-/* 欢迎语 */
-.welcome-message {
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-    margin-top: 20px;
-    margin-bottom: 40px;
+.animate-rotateRainbow {
+    animation: rotateRainbow 1.5s linear infinite;
 }
 </style>

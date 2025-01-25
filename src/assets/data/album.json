@@ -1,0 +1,29 @@
+{
+  "categories": [
+    {
+      "name": "生活",
+      "photos": [
+        {
+          "id": 1,
+          "title": "新显示器",
+          "url": "https://blog.meowrain.cn/api/i/2025/01/25/iMrtcg1737816026407732342.avif",
+          "description": "日常生活场景"
+        },
+        {
+          "id": 2,
+          "title": "新显示器",
+          "url": "https://blog.meowrain.cn/api/i/2025/01/25/aVfypa1737816050432230141.avif",
+          "description": "新买的显示器"
+        }
+      ]
+    },
+    {
+      "name": "学习",
+      "photos": []
+    },
+    {
+      "name": "折腾",
+      "photos": []
+    }
+  ]
+}

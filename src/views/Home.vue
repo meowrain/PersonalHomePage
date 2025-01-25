@@ -12,8 +12,10 @@
             <div class="grid-item" v-for="(item, index) in items" :key="index"
                 @mousemove="handleMouseMove($event, index)" @mouseleave="handleMouseLeave(index)">
                 <div class="card" :style="cardStyles[index]">
-                    <img :src="item.image" alt="Project Image">
-                    <div class="project-name">{{ item.name }}</div>
+                    <a :href="item.url">
+                        <img :src="item.image" alt="Project Image">
+                        <div class="project-name">{{ item.name }}</div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -24,12 +26,9 @@
 import { ref } from 'vue';
 
 const items = [
-    { name: 'Project 1', image: 'https://blog.meowrain.cn/api/i/2025/01/14/kSvDxj1736867642848367434.avif' },
-    { name: 'Project 2', image: 'https://blog.meowrain.cn/api/i/2025/01/14/kSvDxj1736867642848367434.avif' },
-    { name: 'Project 3', image: 'https://blog.meowrain.cn/api/i/2025/01/14/kSvDxj1736867642848367434.avif' },
-    { name: 'Project 4', image: 'https://blog.meowrain.cn/api/i/2025/01/14/kSvDxj1736867642848367434.avif' },
-    { name: 'Project 5', image: 'https://blog.meowrain.cn/api/i/2025/01/14/kSvDxj1736867642848367434.avif' },
-    { name: 'Project 6', image: 'https://blog.meowrain.cn/api/i/2025/01/14/kSvDxj1736867642848367434.avif' },
+    { name: '我的博客', image: 'images/blog.png', url: "https://meowrain.cn" },
+    { name: 'Project 2', image: 'https://blog.meowrain.cn/api/i/2025/01/14/kSvDxj1736867642848367434.avif', url: "" },
+
 ];
 
 const cardStyles = ref(items.map(() => ({})));
