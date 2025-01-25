@@ -5,8 +5,7 @@
                 <!-- Logo 容器 -->
                 <div class="action-bar-logo-container">
                     <a class="action-bar-logo flex cursor-pointer">
-                        <img src="https://cdn.junipercreates.com/neurosama/images/colored_1733948181981.png" alt="Vedal"
-                            class="h-[35px] w-auto">
+                        <img src="/images/logo.png" alt="MeowRain" class="h-[70px] w-auto">
                     </a>
                 </div>
                 <!-- 汉堡菜单按钮 -->
@@ -38,6 +37,7 @@
                             MeowRain</p>
                     </a>
                 </div>
+
             </div>
         </div>
     </div>
