@@ -1,112 +1,123 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-        <NavBar />
+    <div class="projects-container p-4 md:p-8">
+        <!-- 页面标题 -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-pink-200 mb-4">我的项目</h1>
+            <p class="text-pink-200/70">这里展示了我的一些个人项目作品</p>
+        </div>
 
-        <!-- 调整 main 的上边距 -->
-        <main class="container mx-auto px-4 py-8"> <!-- 将 py-16 改为 py-8 -->
-            <div class="max-w-4xl mx-auto text-center mb-12"> <!-- 调整 mb-16 为 mb-12 -->
-                <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                    My Projects
-                </h1>
-                <p class="text-xl text-gray-600 dark:text-gray-300">
-                    A collection of my recent work and experiments
-                </p>
-            </div>
+        <!-- 项目网格 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div v-for="project in projects" :key="project.id"
+                class="project-card bg-black/30 rounded-lg overflow-hidden shadow-lg hover:shadow-pink-200/20 transition-all duration-300 transform hover:-translate-y-1">
+                <!-- 项目预览图 -->
+                <div class="relative aspect-video">
+                    <img :src="project.image" :alt="project.title"
+                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto px-4">
-                <div v-for="project in projects" :key="project.id"
-                    class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden flex flex-col">
-                    <div class="relative aspect-[4/3]">
-                        <img :src="project.image" :alt="project.title"
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            loading="lazy" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <!-- 项目信息 -->
+                <div class="p-6">
+                    <!-- 项目类型标签 -->
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-2 h-2 bg-pink-400 rounded-full"></div>
+                        <span class="text-sm text-pink-200/70">{{ project.category }}</span>
                     </div>
 
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center space-x-2 mb-4">
-                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ project.category }}</span>
-                        </div>
+                    <h2 class="text-xl font-bold text-pink-200 mb-3">{{ project.title }}</h2>
+                    <p class="text-pink-200/70 text-sm mb-6">{{ project.description }}</p>
 
-                        <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3">
-                            {{ project.title }}
-                        </h2>
-                        <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6 flex-1">
-                            {{ project.description }}
-                        </p>
+                    <!-- 技术标签 -->
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span v-for="tech in project.technologies" :key="tech"
+                            class="px-2 py-1 text-xs bg-pink-200/10 text-pink-200 rounded-full">
+                            {{ tech }}
+                        </span>
+                    </div>
 
-                        <div class="flex space-x-4">
-                            <a v-if="project.demoUrl" :href="project.demoUrl" target="_blank"
-                                class="flex-1 text-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200">
-                                Live Demo
-                            </a>
-                            <a v-if="project.codeUrl" :href="project.codeUrl" target="_blank"
-                                class="flex-1 text-center px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition-colors duration-200">
-                                View Code
-                            </a>
-                        </div>
+                    <!-- 项目链接 -->
+                    <div class="flex space-x-4">
+                        <a v-if="project.demoUrl" :href="project.demoUrl" target="_blank"
+                            class="flex-1 text-center px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors duration-200">
+                            在线预览
+                        </a>
+                        <a v-if="project.codeUrl" :href="project.codeUrl" target="_blank"
+                            class="flex-1 text-center px-4 py-2 bg-gray-800 text-pink-200 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                            查看代码
+                        </a>
                     </div>
                 </div>
             </div>
-        </main>
-
-        <Footer />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 interface Project {
-    id: number
-    title: string
-    description: string
-    image: string
-    category: string
-    demoUrl?: string
-    codeUrl?: string
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    category: string;
+    technologies: string[];
+    demoUrl?: string;
+    codeUrl?: string;
 }
 
 const projects: Project[] = [
     {
         id: 1,
-        title: 'Project One',
-        description: 'A modern web application with cutting-edge features',
-        image: '/images/placeholder.png',
-        category: 'Web Development',
-        demoUrl: '#',
-        codeUrl: '#'
+        title: "个人博客系统",
+        description: "使用 Vue3 + TypeScript 开发的个人博客系统，支持 Markdown 写作",
+        image: "/images/projects/blog.png",
+        category: "Web 全栈开发",
+        technologies: ["Vue3", "TypeScript", "Node.js", "MongoDB"],
+        demoUrl: "https://blog.meowrain.cn",
+        codeUrl: "https://github.com/meowrain/blog"
     },
     {
         id: 2,
-        title: 'Project Two',
-        description: 'An innovative mobile app solution',
-        image: '/images/placeholder.png',
-        category: 'Mobile Development',
-        demoUrl: '#',
-        codeUrl: '#'
+        title: "Notebook",
+        description: "一个简洁的在线笔记本应用，支持实时保存和 Markdown 格式",
+        image: "/images/projects/notebook.png",
+        category: "前端开发",
+        technologies: ["Vue3", "Vite", "TailwindCSS"],
+        demoUrl: "https://notebook.meowrain.cn",
+        codeUrl: "https://github.com/meowrain/notebook"
     },
     {
         id: 3,
-        title: 'Project Three',
-        description: 'A powerful backend system with microservices',
-        image: '/images/placeholder.png',
-        category: 'Backend Development',
-        demoUrl: '#',
-        codeUrl: '#'
+        title: "TodoList",
+        description: "基于 Vue3 的待办事项管理应用，支持任务分类和提醒",
+        image: "/images/projects/todo.png",
+        category: "前端开发",
+        technologies: ["Vue3", "Pinia", "TailwindCSS"],
+        codeUrl: "https://github.com/meowrain/TodoList"
     }
-]
+];
 </script>
 
 <style scoped>
-/* Custom animations */
-.group:hover .group-hover\:scale-105 {
-    transform: scale(1.05);
+.projects-container {
+    min-height: calc(100vh - 64px);
+    /* 减去导航栏高度 */
+    background-color: black;
 }
 
-/* Smooth transitions */
-.transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
+.project-card {
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 192, 203, 0.1);
+}
+
+.project-card:hover {
+    border-color: rgba(255, 192, 203, 0.3);
+}
+
+/* 确保在移动设备上有合适的间距 */
+@media (max-width: 640px) {
+    .project-card {
+        margin-bottom: 1.5rem;
+    }
 }
 </style>

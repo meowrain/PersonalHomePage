@@ -1,183 +1,190 @@
 <template>
-    <div class="album-container p-4">
-        <!-- Loading state with animation -->
-        <Transition name="fade">
-            <div v-if="loading" class="flex justify-center items-center h-64">
-                <span class="loading loading-spinner loading-lg"></span>
-            </div>
-        </Transition>
+    <div class="album-container p-4 md:p-8">
+        <!-- 页面标题 -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-pink-200 mb-4">我的相册</h1>
+            <p class="text-pink-200/70">记录生活中的美好瞬间</p>
+        </div>
 
-        <!-- Error state with animation -->
-        <Transition name="slide-down">
-            <div v-if="error" class="alert alert-error">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>Error: {{ error }}</span>
-            </div>
-        </Transition>
-
-        <!-- Category tabs -->
-        <div class="tabs tabs-boxed bg-base-200 p-2 mb-8">
-            <button v-for="category in categories" :key="category" class="tab"
-                :class="{ 'tab-active': activeCategory === category }" @click="activeCategory = category">
+        <!-- 分类标签 -->
+        <div class="flex justify-center flex-wrap gap-4 mb-8">
+            <button v-for="category in categories" :key="category"
+                class="px-4 py-2 rounded-full text-sm transition-all duration-200" :class="{
+                    'bg-pink-500 text-white': activeCategory === category,
+                    'bg-pink-200/10 text-pink-200 hover:bg-pink-200/20': activeCategory !== category
+                }" @click="activeCategory = category">
                 {{ category }}
             </button>
         </div>
 
-        <!-- Photo grid with staggered animations -->
-        <TransitionGroup name="staggered-fade" tag="div" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        <!-- Loading 状态 -->
+        <div v-if="loading" class="flex justify-center items-center h-64">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-200"></div>
+        </div>
+
+        <!-- 错误提示 -->
+        <div v-if="error" class="bg-red-500/10 border border-red-500/20 text-pink-200 p-4 rounded-lg mb-8">
+            <p>{{ error }}</p>
+        </div>
+
+        <!-- 照片网格 -->
+        <TransitionGroup name="photo-grid" tag="div"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             v-if="!loading && !error && filteredPhotos.length > 0">
-            <div v-for="(photo, index) in paginatedPhotos" :key="photo.id"
-                class="card shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden"
-                :style="{ 'transition-delay': `${index * 50}ms` }">
-                <figure class="relative aspect-square bg-black">
-                    <img :src="photo.url" :alt="photo.description || 'Photo'" class="w-full h-full object-cover"
-                        loading="lazy" @error="handleImageError(photo)">
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title">{{ photo.title }}</h2>
-                    <p>{{ photo.description }}</p>
-                    <div class="card-actions justify-end">
-                        <button class="btn btn-primary">View</button>
+            <div v-for="photo in paginatedPhotos" :key="photo.id"
+                class="group relative aspect-square rounded-lg overflow-hidden bg-black/30 border border-pink-200/10 hover:border-pink-200/30 transition-all duration-300">
+                <!-- 照片 -->
+                <img :src="photo.url" :alt="photo.description"
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy" @error="handleImageError(photo)" />
+
+                <!-- 渐变遮罩 -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+
+                <!-- 照片信息 -->
+                <div
+                    class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 class="text-lg font-bold text-pink-200 mb-2">{{ photo.title }}</h3>
+                    <p class="text-sm text-pink-200/70 mb-3">{{ photo.description }}</p>
+                    <!-- 标签 -->
+                    <div class="flex flex-wrap gap-2">
+                        <span v-for="tag in photo.tags" :key="tag"
+                            class="px-2 py-1 text-xs bg-pink-200/10 text-pink-200 rounded-full">
+                            {{ tag }}
+                        </span>
                     </div>
                 </div>
             </div>
         </TransitionGroup>
 
-        <!-- Pagination controls -->
-        <div v-if="!loading && !error && photos.length > 0" class="flex justify-center mt-8">
-            <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-ghost mr-2">Previous</button>
-            <span class="mx-4 self-center">Page {{ currentPage }}</span>
-            <button @click="nextPage" class="btn btn-ghost ml-2">Next</button>
+        <!-- 分页控制 -->
+        <div v-if="!loading && !error && photos.length > 0" class="flex justify-center items-center space-x-4 mt-12">
+            <button @click="prevPage"
+                class="px-4 py-2 rounded-lg bg-pink-200/10 text-pink-200 hover:bg-pink-200/20 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                :disabled="currentPage === 1">
+                上一页
+            </button>
+            <span class="text-pink-200">第 {{ currentPage }} 页</span>
+            <button @click="nextPage"
+                class="px-4 py-2 rounded-lg bg-pink-200/10 text-pink-200 hover:bg-pink-200/20 transition-colors duration-200">
+                下一页
+            </button>
         </div>
     </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
 interface Photo {
-    id: number
-    title: string
-    url: string
-    description?: string
-    category: string
+    id: number;
+    title: string;
+    url: string;
+    description?: string;
+    category: string;
+    tags: string[];
 }
 
-// Category tabs
-const categories = ref<string[]>([])
-const activeCategory = ref<string>('全部')
+// 状态管理
+const loading = ref(false);
+const error = ref<string | null>(null);
+const photos = ref<Photo[]>([]);
+const activeCategory = ref<string>('全部');
+const currentPage = ref(1);
+const perPage = 12;
 
-// Fetch image data from JSON
+// 加载照片数据
 async function loadPhotos() {
     try {
-        loading.value = true
-        error.value = null
-        const response = await fetch('/src/assets/data/album.json')
-        const data = await response.json()
-
-        // Extract categories
-        categories.value = ['全部', ...data.categories.map((c: any) => c.name)]
-
-        // Flatten photos with category
-        photos.value = data.categories.flatMap((category: any) =>
-            category.photos.map((photo: any) => ({
-                ...photo,
-                category: category.name
-            }))
-        )
+        loading.value = true;
+        error.value = null;
+        const response = await fetch('/src/assets/data/album.json');
+        const data = await response.json();
+        photos.value = data;
     } catch (err) {
-        error.value = err instanceof Error ? err.message : 'Unknown error occurred'
+        error.value = err instanceof Error ? err.message : '加载失败，请稍后重试';
     } finally {
-        loading.value = false
+        loading.value = false;
     }
 }
 
-// Reactive state
-const photos = ref<Photo[]>([])
-const loading = ref(false)
-const error = ref<string | null>(null)
-const currentPage = ref(1)
-const perPage = 12
+// 计算属性
+const categories = computed(() => {
+    const cats = ['全部', ...new Set(photos.value.map(photo => photo.category))];
+    return cats;
+});
 
-// Computed properties
 const filteredPhotos = computed(() => {
     if (activeCategory.value === '全部') {
-        return photos.value
+        return photos.value;
     }
-    return photos.value.filter(photo => photo.category === activeCategory.value)
-})
+    return photos.value.filter(photo => photo.category === activeCategory.value);
+});
 
 const paginatedPhotos = computed(() => {
-    const start = (currentPage.value - 1) * perPage
-    const end = start + perPage
-    return filteredPhotos.value.slice(start, end)
-})
+    const start = (currentPage.value - 1) * perPage;
+    const end = start + perPage;
+    return filteredPhotos.value.slice(start, end);
+});
 
-// Methods
-function nextPage() {
-    currentPage.value++
+// 方法
+function handleImageError(photo: Photo) {
+    photo.url = '/images/placeholder.png';
 }
 
 function prevPage() {
-    currentPage.value--
+    if (currentPage.value > 1) {
+        currentPage.value--;
+    }
 }
 
-function handleImageError(photo: Photo) {
-    // Fallback to placeholder image
-    photo.url = '/images/placeholder.png'
+function nextPage() {
+    const maxPage = Math.ceil(filteredPhotos.value.length / perPage);
+    if (currentPage.value < maxPage) {
+        currentPage.value++;
+    }
 }
 
+// 生命周期钩子
 onMounted(() => {
-    loadPhotos()
-})
+    loadPhotos();
+});
 </script>
 
 <style scoped>
 .album-container {
-    max-width: 1600px;
-    margin: 0 auto;
+    min-height: calc(100vh - 64px);
+    background-color: black;
 }
 
-/* Animation styles */
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
-
-.slide-down-enter-active,
-.slide-down-leave-active {
-    transition: all 0.3s ease;
-    transform: translateY(0);
-}
-
-.slide-down-enter-from,
-.slide-down-leave-to {
-    transform: translateY(-20px);
-    opacity: 0;
-}
-
-.staggered-fade-move,
-.staggered-fade-enter-active,
-.staggered-fade-leave-active {
+/* 照片网格动画 */
+.photo-grid-enter-active,
+.photo-grid-leave-active {
     transition: all 0.5s ease;
 }
 
-.staggered-fade-enter-from,
-.staggered-fade-leave-to {
+.photo-grid-enter-from,
+.photo-grid-leave-to {
     opacity: 0;
     transform: translateY(20px);
 }
 
-.staggered-fade-leave-active {
-    position: absolute;
+.photo-grid-move {
+    transition: transform 0.5s ease;
+}
+
+/* 确保图片加载时保持布局 */
+img {
+    min-height: 200px;
+    background: rgba(255, 192, 203, 0.1);
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+    .grid {
+        gap: 1rem;
+    }
 }
 </style>

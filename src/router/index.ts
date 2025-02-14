@@ -20,6 +20,11 @@ const routes = [
     name: "Album",
     component: () => import("@views/Album.vue"),
   },
+  {
+    path: "/loved-videos",
+    name: "LovedVideos",
+    component: () => import("@views/LovedVideos.vue"),
+  }
 ];
 const router = createRouter({
   history: createWebHistory(),
