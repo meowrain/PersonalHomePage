@@ -81,7 +81,16 @@ async function loadPhotos() {
     try {
         loading.value = true;
         error.value = null;
-        const response = await fetch('/api/i/images.json');
+
+        // 根据选择的分类决定 API 端点
+        let apiUrl = '/api/i/images.json';
+        if (activeCategory.value === '二次元') {
+            apiUrl = '/api/i/acg.json';
+        } else if (activeCategory.value === '生活') {
+            apiUrl = '/api/i/life.json';
+        }
+
+        const response = await fetch(apiUrl);
         const data: Photo[] = await response.json();
 
         // 处理数据：添加 URL 前缀和默认分类
@@ -104,22 +113,30 @@ async function loadPhotos() {
 
 // 计算可用的年份
 const availableYears = computed(() => {
-    const years = new Set(photos.value.map(photo => photo.year).filter(Boolean));
+    const years = new Set(
+        photos.value
+            .map(photo => photo.year)
+            .filter((year): year is string => Boolean(year))
+    );
     return ['全部', ...Array.from(years).sort((a, b) => b.localeCompare(a))];
 });
 
 // 计算分类
 const categories = computed(() => {
+    // 固定的二次元和生活分类
+    const fixedCategories = ['二次元', '生活'];
+    // 从当前照片中提取的分类
     const cats = new Set(photos.value.map(photo => photo.category || '默认分类'));
-    return ['全部', ...Array.from(cats).sort()];
+    return ['全部', ...fixedCategories, ...Array.from(cats).sort()];
 });
 
 // 筛选照片
 const filteredPhotos = computed(() => {
     let result = photos.value;
 
-    // 按分类筛选
-    if (activeCategory.value !== '全部') {
+    // 如果是二次元或生活分类，不需要再按 category 筛选（因为已经从专门的 API 加载）
+    // 其他分类需要按 category 字段筛选
+    if (activeCategory.value !== '全部' && activeCategory.value !== '二次元' && activeCategory.value !== '生活') {
         result = result.filter(photo => (photo.category || '默认分类') === activeCategory.value);
     }
 
@@ -174,6 +191,16 @@ function nextPage() {
 watch([activeCategory, selectedDate], () => {
     resetPage();
 }, { deep: true });
+
+// 监听分类变化，当切换到二次元或生活时重新加载数据
+watch(activeCategory, (newCategory, oldCategory) => {
+    // 只在切换到二次元或生活，或从它们切换出来时重新加载
+    if (['二次元', '生活'].includes(newCategory) || ['二次元', '生活'].includes(oldCategory)) {
+        // 重置日期筛选
+        selectedDate.value = { year: '全部', month: '全部' };
+        loadPhotos();
+    }
+});
 
 // 生命周期钩子
 onMounted(() => {
