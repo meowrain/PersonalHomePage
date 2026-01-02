@@ -83,11 +83,12 @@ async function loadPhotos() {
         error.value = null;
 
         // 根据选择的分类决定 API 端点
-        let apiUrl = '/api/i/images.json';
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/';
+        let apiUrl = `${apiBaseUrl}/api/i/images.json`;
         if (activeCategory.value === '二次元') {
-            apiUrl = '/api/i/acg.json';
+            apiUrl = `${apiBaseUrl}/api/i/acg.json`;
         } else if (activeCategory.value === '生活') {
-            apiUrl = '/api/i/life.json';
+            apiUrl = `${apiBaseUrl}/api/i/life.json`;
         }
 
         const response = await fetch(apiUrl);

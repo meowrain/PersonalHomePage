@@ -8,9 +8,9 @@ This is a personal portfolio website built with Vue 3, TypeScript, and Vite. It 
 
 ## Development Commands
 
-- **Start dev server**: `npm run dev` (or `bun run dev`)
-- **Build for production**: `npm run build` - runs `vue-tsc -b` for type checking then `vite build`
-- **Preview production build**: `npm run preview`
+- **Start dev server**: `bun run dev` (or `bun run dev`)
+- **Build for production**: `bun run build` - runs `vue-tsc -b` for type checking then `vite build`
+- **Preview production build**: `bun run preview`
 
 ## Tech Stack & Architecture
 

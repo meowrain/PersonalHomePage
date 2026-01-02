@@ -14,7 +14,10 @@
         "vue-router": "4",
       },
       "devDependencies": {
+        "@iconify-json/logos": "^1.2.10",
         "@iconify-json/mdi": "^1.2.3",
+        "@iconify-json/simple-icons": "^1.2.64",
+        "@iconify/json": "^2.2.424",
         "@iconify/vue": "^4.3.0",
         "@types/node": "^22.10.6",
         "@unocss/preset-icons": "^65.4.3",
@@ -140,7 +143,13 @@
 
     "@humanwhocodes/retry": ["@humanwhocodes/retry@0.4.1", "", {}, "sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA=="],
 
+    "@iconify-json/logos": ["@iconify-json/logos@1.2.10", "http://mirrors.tencent.com/npm/@iconify-json/logos/-/logos-1.2.10.tgz", { "dependencies": { "@iconify/types": "*" } }, "sha512-qxaXKJ6fu8jzTMPQdHtNxlfx6tBQ0jXRbHZIYy5Ilh8Lx9US9FsAdzZWUR8MXV8PnWTKGDFO4ZZee9VwerCyMA=="],
+
     "@iconify-json/mdi": ["@iconify-json/mdi@1.2.3", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg=="],
+
+    "@iconify-json/simple-icons": ["@iconify-json/simple-icons@1.2.64", "http://mirrors.tencent.com/npm/@iconify-json/simple-icons/-/simple-icons-1.2.64.tgz", { "dependencies": { "@iconify/types": "*" } }, "sha512-SMmm//tjZBvHnT0EAzZLnBTL6bukSkncM0pwkOXjr0FsAeCqjQtqoxBR0Mp+PazIJjXJKHm1Ju0YgnCIPOodJg=="],
+
+    "@iconify/json": ["@iconify/json@2.2.424", "http://mirrors.tencent.com/npm/@iconify/json/-/json-2.2.424.tgz", { "dependencies": { "@iconify/types": "*", "pathe": "^2.0.3" } }, "sha512-Lxx8ad2DgyTGV88ec0mlaJ+OSjr0SyU0j8Awfbxl9JrxxHmBEFQJ+jywhztWAhLnaMUG3+G1htNJYzEsoAsNMQ=="],
 
     "@iconify/types": ["@iconify/types@2.0.0", "", {}, "sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg=="],
 
