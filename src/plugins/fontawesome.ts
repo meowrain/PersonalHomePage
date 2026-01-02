@@ -8,7 +8,12 @@ import {
     faSearchMinus,
     faSearch,
     faDownload,
-    faExpand
+    faExpand,
+    faHome,
+    faCode,
+    faImages,
+    faVideo,
+    faUser
 } from '@fortawesome/free-solid-svg-icons';
 
 // 添加图标到 library
@@ -20,7 +25,12 @@ library.add(
     faSearchMinus,
     faSearch,
     faDownload,
-    faExpand
+    faExpand,
+    faHome,
+    faCode,
+    faImages,
+    faVideo,
+    faUser
 );
 
 export { FontAwesomeIcon };

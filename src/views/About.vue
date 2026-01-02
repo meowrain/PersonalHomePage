@@ -4,6 +4,15 @@
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-pink-500/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
+        <!-- 二次元装饰 - 飘浮的星星和爱心 -->
+        <div class="floating-star absolute top-20 left-10 text-4xl opacity-20 pointer-events-none" style="animation-delay: 0s;">⭐</div>
+        <div class="floating-star absolute top-40 right-20 text-3xl opacity-20 pointer-events-none" style="animation-delay: 1s;">✨</div>
+        <div class="floating-star absolute bottom-40 left-20 text-3xl opacity-20 pointer-events-none" style="animation-delay: 2s;">💖</div>
+        <div class="floating-star absolute top-60 left-1/4 text-2xl opacity-20 pointer-events-none" style="animation-delay: 0.5s;">⭐</div>
+        <div class="floating-star absolute bottom-60 right-1/4 text-2xl opacity-20 pointer-events-none" style="animation-delay: 1.5s;">✨</div>
+        <div class="floating-star absolute top-1/3 right-10 text-3xl opacity-20 pointer-events-none" style="animation-delay: 2.5s;">💫</div>
+        <div class="floating-star absolute bottom-20 right-40 text-2xl opacity-20 pointer-events-none" style="animation-delay: 3s;">💖</div>
+
         <!-- 个人信息卡片 -->
         <div class="card-container max-w-4xl mx-auto relative">
             <!-- 渐变边框层 -->
@@ -37,6 +46,10 @@
                 <!-- 闪光效果 -->
                 <div class="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-pink-500/5 to-transparent
                     shimmer-effect pointer-events-none"></div>
+
+                <!-- 二次元角标装饰 -->
+                <div class="absolute -top-3 -right-3 text-5xl animate-bounce opacity-60 pointer-events-none drop-shadow-lg">✨</div>
+                <div class="absolute -bottom-3 -left-3 text-4xl animate-pulse opacity-60 pointer-events-none drop-shadow-lg">💖</div>
             </div>
         </div>
     </div>
@@ -112,6 +125,20 @@ const handleMouseLeave = (event: MouseEvent) => {
     background-color: black;
 }
 
+/* 飘浮星星动画 */
+.floating-star {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+    }
+}
+
 /* 入场动画 */
 @keyframes fade-in {
     0% {
@@ -172,6 +199,11 @@ const handleMouseLeave = (event: MouseEvent) => {
 @media (max-width: 640px) {
     .about-container {
         padding: 1rem;
+    }
+
+    /* 移动端隐藏部分装饰 */
+    .floating-star {
+        display: none;
     }
 }
 </style>

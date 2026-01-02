@@ -1,34 +1,49 @@
 <template>
-    <div class="album-container p-4 md:p-8">
-        <!-- 页面标题 -->
-        <PageHeader title="我的相册" subtitle="记录生活中的美好瞬间" />
+    <div class="album-container p-4 md:p-8 relative overflow-hidden">
+        <!-- 背景装饰光晕 -->
+        <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-pink-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <!-- 日期筛选器 -->
-        <DateFilter v-model="selectedDate" :years="availableYears" />
+        <!-- 二次元装饰 - 飘浮的星星和爱心 -->
+        <div class="floating-star absolute top-20 left-10 text-4xl opacity-20 pointer-events-none hidden md:block" style="animation-delay: 0s;">📸</div>
+        <div class="floating-star absolute top-40 right-20 text-3xl opacity-20 pointer-events-none hidden md:block" style="animation-delay: 1s;">✨</div>
+        <div class="floating-star absolute bottom-40 left-20 text-3xl opacity-20 pointer-events-none hidden md:block" style="animation-delay: 2s;">💖</div>
+        <div class="floating-star absolute top-60 left-1/3 text-2xl opacity-20 pointer-events-none hidden md:block" style="animation-delay: 0.5s;">🌸</div>
+        <div class="floating-star absolute bottom-60 right-1/3 text-2xl opacity-20 pointer-events-none hidden md:block" style="animation-delay: 1.5s;">✨</div>
+        <div class="floating-star absolute top-1/2 right-10 text-3xl opacity-20 pointer-events-none hidden md:block" style="animation-delay: 2.5s;">💫</div>
+        <div class="floating-star absolute bottom-20 right-40 text-2xl opacity-20 pointer-events-none hidden md:block" style="animation-delay: 3s;">🎀</div>
 
-        <!-- 分类标签 -->
-        <CategoryFilter v-model="activeCategory" :categories="categories" />
+        <div class="relative z-10">
+            <!-- 页面标题 -->
+            <PageHeader title="我的相册 📷" subtitle="记录生活中的美好瞬间" />
 
-        <!-- Loading 状态 -->
-        <LoadingSpinner v-if="loading" />
+            <!-- 日期筛选器 -->
+            <DateFilter v-model="selectedDate" :years="availableYears" />
 
-        <!-- 错误提示 -->
-        <ErrorMessage v-if="error" :message="error" />
+            <!-- 分类标签 -->
+            <CategoryFilter v-model="activeCategory" :categories="categories" />
 
-        <!-- 照片网格 -->
-        <PhotoGrid v-if="!loading && !error && filteredPhotos.length > 0" :photos="paginatedPhotos"
-            @imageError="handleImageError" @photoClick="handlePhotoClick" />
+            <!-- Loading 状态 -->
+            <LoadingSpinner v-if="loading" />
 
-        <!-- 分页控制 -->
-        <Pagination v-if="!loading && !error && filteredPhotos.length > 0" :currentPage="currentPage"
-            :totalPages="totalPages" @prev="prevPage" @next="nextPage" />
+            <!-- 错误提示 -->
+            <ErrorMessage v-if="error" :message="error" />
 
-        <!-- 图片灯箱预览 -->
-        <PhotoLightbox
-            v-model:visible="lightboxVisible"
-            :photos="filteredPhotos"
-            :initialIndex="lightboxIndex"
-        />
+            <!-- 照片网格 -->
+            <PhotoGrid v-if="!loading && !error && filteredPhotos.length > 0" :photos="paginatedPhotos"
+                @imageError="handleImageError" @photoClick="handlePhotoClick" />
+
+            <!-- 分页控制 -->
+            <Pagination v-if="!loading && !error && filteredPhotos.length > 0" :currentPage="currentPage"
+                :totalPages="totalPages" @prev="prevPage" @next="nextPage" />
+
+            <!-- 图片灯箱预览 -->
+            <PhotoLightbox
+                v-model:visible="lightboxVisible"
+                :photos="filteredPhotos"
+                :initialIndex="lightboxIndex"
+            />
+        </div>
     </div>
 </template>
 
@@ -170,5 +185,19 @@ onMounted(() => {
 .album-container {
     min-height: calc(100vh - 64px);
     background-color: black;
+}
+
+/* 飘浮星星动画 */
+.floating-star {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+    }
 }
 </style>
