@@ -3,6 +3,9 @@
         <!-- 页面标题 -->
         <PageHeader title="我的相册" subtitle="记录生活中的美好瞬间" />
 
+        <!-- 日期筛选器 -->
+        <DateFilter v-model="selectedDate" :years="availableYears" />
+
         <!-- 分类标签 -->
         <CategoryFilter v-model="activeCategory" :categories="categories" />
 
@@ -14,11 +17,18 @@
 
         <!-- 照片网格 -->
         <PhotoGrid v-if="!loading && !error && filteredPhotos.length > 0" :photos="paginatedPhotos"
-            @imageError="handleImageError" />
+            @imageError="handleImageError" @photoClick="handlePhotoClick" />
 
         <!-- 分页控制 -->
         <Pagination v-if="!loading && !error && filteredPhotos.length > 0" :currentPage="currentPage"
             :totalPages="totalPages" @prev="prevPage" @next="nextPage" />
+
+        <!-- 图片灯箱预览 -->
+        <PhotoLightbox
+            v-model:visible="lightboxVisible"
+            :photos="filteredPhotos"
+            :initialIndex="lightboxIndex"
+        />
     </div>
 </template>
 
@@ -26,7 +36,9 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import PageHeader from '@/components/common/PageHeader.vue';
 import CategoryFilter from '@/components/album/CategoryFilter.vue';
+import DateFilter from '@/components/album/DateFilter.vue';
 import PhotoGrid from '@/components/album/PhotoGrid.vue';
+import PhotoLightbox from '@/components/album/PhotoLightbox.vue';
 import Pagination from '@/components/common/Pagination.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
 import ErrorMessage from '@/components/common/ErrorMessage.vue';
@@ -36,8 +48,14 @@ import type { Photo } from '@/types';
 // 状态管理
 const loading = ref(false);
 const error = ref<string | null>(null);
-const photos = ref<Photo[]>([]);
+const rawPhotos = ref<Photo[]>([]); // 原始数据
+const photos = ref<Photo[]>([]); // 处理后的数据（添加默认分类）
 const activeCategory = ref<string>('全部');
+const selectedDate = ref<{ year: string; month: string }>({ year: '全部', month: '全部' });
+
+// 灯箱状态
+const lightboxVisible = ref(false);
+const lightboxIndex = ref(0);
 
 // 使用分页组合式函数
 const { currentPage, resetPage } = usePagination(12);
@@ -48,9 +66,20 @@ async function loadPhotos() {
     try {
         loading.value = true;
         error.value = null;
-        const response = await fetch('/src/assets/data/album.json');
-        const data = await response.json();
-        photos.value = data;
+        const response = await fetch('/api/i/images.json');
+        const data: Photo[] = await response.json();
+
+        // 处理数据：添加 URL 前缀和默认分类
+        rawPhotos.value = data;
+        photos.value = data.map((photo, index) => ({
+            ...photo,
+            id: index,
+            url: `https://blog.meowrain.cn${photo.url}`,
+            title: photo.filename || photo.date,
+            description: photo.date,
+            category: photo.category || '默认分类',
+            tags: photo.tags || []
+        }));
     } catch (err) {
         error.value = err instanceof Error ? err.message : '加载失败，请稍后重试';
     } finally {
@@ -58,17 +87,38 @@ async function loadPhotos() {
     }
 }
 
-// 计算属性
-const categories = computed(() => {
-    const cats = ['全部', ...new Set(photos.value.map(photo => photo.category))];
-    return cats;
+// 计算可用的年份
+const availableYears = computed(() => {
+    const years = new Set(photos.value.map(photo => photo.year).filter(Boolean));
+    return ['全部', ...Array.from(years).sort((a, b) => b.localeCompare(a))];
 });
 
+// 计算分类
+const categories = computed(() => {
+    const cats = new Set(photos.value.map(photo => photo.category || '默认分类'));
+    return ['全部', ...Array.from(cats).sort()];
+});
+
+// 筛选照片
 const filteredPhotos = computed(() => {
-    if (activeCategory.value === '全部') {
-        return photos.value;
+    let result = photos.value;
+
+    // 按分类筛选
+    if (activeCategory.value !== '全部') {
+        result = result.filter(photo => (photo.category || '默认分类') === activeCategory.value);
     }
-    return photos.value.filter(photo => photo.category === activeCategory.value);
+
+    // 按年份筛选
+    if (selectedDate.value.year !== '全部') {
+        result = result.filter(photo => photo.year === selectedDate.value.year);
+
+        // 按月份筛选
+        if (selectedDate.value.month !== '全部') {
+            result = result.filter(photo => photo.month === selectedDate.value.month);
+        }
+    }
+
+    return result;
 });
 
 const paginatedPhotos = computed(() => {
@@ -86,6 +136,13 @@ function handleImageError(photo: Photo) {
     photo.url = '/images/placeholder.png';
 }
 
+function handlePhotoClick(index: number) {
+    // 计算在全部筛选结果中的索引
+    const actualIndex = (currentPage.value - 1) * perPage + index;
+    lightboxIndex.value = actualIndex;
+    lightboxVisible.value = true;
+}
+
 function prevPage() {
     if (currentPage.value > 1) {
         currentPage.value--;
@@ -98,10 +155,10 @@ function nextPage() {
     }
 }
 
-// 监听分类变化，重置页码
-watch(activeCategory, () => {
+// 监听筛选条件变化，重置页码
+watch([activeCategory, selectedDate], () => {
     resetPage();
-});
+}, { deep: true });
 
 // 生命周期钩子
 onMounted(() => {
@@ -113,34 +170,5 @@ onMounted(() => {
 .album-container {
     min-height: calc(100vh - 64px);
     background-color: black;
-}
-
-/* 照片网格动画 */
-.photo-grid-enter-active,
-.photo-grid-leave-active {
-    transition: all 0.5s ease;
-}
-
-.photo-grid-enter-from,
-.photo-grid-leave-to {
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.photo-grid-move {
-    transition: transform 0.5s ease;
-}
-
-/* 确保图片加载时保持布局 */
-img {
-    min-height: 200px;
-    background: rgba(255, 192, 203, 0.1);
-}
-
-/* 响应式调整 */
-@media (max-width: 640px) {
-    .grid {
-        gap: 1rem;
-    }
 }
 </style>

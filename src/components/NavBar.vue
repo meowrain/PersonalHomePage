@@ -21,7 +21,7 @@
                 </div>
 
                 <!-- 导航链接 - 桌面端 -->
-                <nav class="hidden md:flex items-center space-x-8">
+                <nav class="hidden md:flex flex-1 justify-center items-center space-x-8">
                     <RouterLink v-for="link in navLinks" :key="link.path" :to="link.path"
                         class="text-pink-200/70 hover:text-pink-200 transition-colors duration-200"
                         :class="{ 'text-pink-200 font-bold': isCurrentRoute(link.path) }">

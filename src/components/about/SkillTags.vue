@@ -5,9 +5,7 @@
             <div v-for="skill in skills" :key="skill.name"
                 class="group relative px-4 py-2 rounded-full bg-pink-200/5 border border-pink-200/10 hover:border-pink-200/30 transition-all duration-300">
                 <div class="flex items-center space-x-2">
-                    <font-awesome-icon v-if="Array.isArray(skill.icon)" :icon="skill.icon"
-                        class="w-5 h-5 text-pink-200/70 group-hover:text-pink-200" />
-                    <img v-else :src="skill.icon" :alt="skill.name" class="w-5 h-5" />
+                    <div :class="skill.icon" class="w-5 h-5 inline-block text-pink-200/70 group-hover:text-pink-200"></div>
                     <span class="text-pink-200/70 group-hover:text-pink-200">{{ skill.name }}</span>
                 </div>
             </div>

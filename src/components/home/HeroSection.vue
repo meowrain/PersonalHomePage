@@ -1,5 +1,5 @@
 <template>
-    <div class="hero-section relative h-[85vh] overflow-hidden">
+    <div class="hero-section relative h-[70vh] overflow-hidden">
         <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
             <source src="../../assets/background.mp4" type="video/mp4">
         </video>

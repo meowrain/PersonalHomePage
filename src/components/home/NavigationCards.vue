@@ -1,15 +1,15 @@
 <template>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <div v-for="(item, index) in items" :key="index"
             class="group relative overflow-hidden rounded-2xl bg-pink-200/5 border border-pink-200/10 hover:border-pink-200/30 transition-all duration-500"
             @mousemove="handleMouseMove($event, index)" @mouseleave="handleMouseLeave(index)">
             <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 :style="cardStyles[index]">
             </div>
-            <RouterLink :to="item.url" class="block p-6 relative z-10">
+            <RouterLink :to="item.url" class="block p-8 relative z-10">
                 <div class="flex flex-col h-full">
                     <div class="flex items-center space-x-3 mb-4">
-                        <component :is="item.icon" class="w-8 h-8 text-pink-200" />
+                        <div :class="item.icon" class="w-8 h-8 text-pink-200"></div>
                         <h3 class="text-xl font-bold text-pink-200">{{ item.name }}</h3>
                     </div>
                     <p class="text-pink-200/70 mb-6">{{ item.description }}</p>

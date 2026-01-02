@@ -28,12 +28,12 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
 ];
 
 export const SKILLS: Skill[] = [
-    { name: 'Golang', level: 85, icon: '/icons/golang.svg' },
-    { name: 'Vue.js', level: 80, icon: '/icons/vue.svg' },
-    { name: 'Docker', level: 75, icon: '/icons/docker.svg' },
-    { name: 'TypeScript', level: 70, icon: '/icons/typescript.svg' },
-    { name: 'Kubernetes', level: 65, icon: '/icons/kubernetes.svg' },
-    { name: 'PostgreSQL', level: 70, icon: '/icons/postgresql.svg' },
-    { name: 'Linux', level: 80, icon: '/icons/linux.svg' },
-    { name: 'Git', level: 85, icon: '/icons/git.svg' }
+    { name: 'Golang', level: 85, icon: 'i-logos-go' },
+    { name: 'Vue.js', level: 80, icon: 'i-logos-vue' },
+    { name: 'Docker', level: 75, icon: 'i-logos-docker-icon' },
+    { name: 'TypeScript', level: 70, icon: 'i-logos-typescript-icon' },
+    { name: 'Kubernetes', level: 65, icon: 'i-mdi-kubernetes' },
+    { name: 'PostgreSQL', level: 70, icon: 'i-simple-icons-postgresql' },
+    { name: 'Linux', level: 80, icon: 'i-mdi-linux' },
+    { name: 'Git', level: 85, icon: 'i-logos-git-icon' }
 ];

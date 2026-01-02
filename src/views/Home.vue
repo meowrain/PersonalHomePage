@@ -4,7 +4,7 @@
         <HeroSection />
 
         <!-- 内容区域 -->
-        <div class="content-section bg-black px-4 py-16 md:py-24">
+        <div class="content-section bg-black px-6 py-12 md:py-16">
             <div class="max-w-7xl mx-auto">
                 <!-- 导航卡片 -->
                 <NavigationCards :items="NAVIGATION_ITEMS" />
